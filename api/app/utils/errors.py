@@ -11,8 +11,8 @@ RESET_PASSWORD_CODE_NOT_VALID = (
 TOO_MANY_REQUESTS = ({'message': 'Too many requests'}, 429)
 EVENT_NOT_FOUND = ({'message': 'No event exists with that ID'}, 404)
 SECTION_NOT_FOUND = ({'message': 'No event exists with that ID'}, 409)
-QUESTION_NOT_FOUND = ({'message': 'No event exists with that ID'}, 409)
-FORM_NOT_FOUND = ({'message': 'No event exists with that ID'}, 404)
+CAMERA_NOT_FOUND = ({'message': 'No camera found belonging to site with that ID'}, 409)
+SITE_NOT_FOUND = ({'message': 'No site exists with that ID'}, 404)
 RESPONSE_NOT_FOUND = (
     {'message': 'No response found for the given event and user'}, 404)
 UPDATE_CONFLICT = (
