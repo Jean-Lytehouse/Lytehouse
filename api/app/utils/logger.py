@@ -41,7 +41,6 @@ class Logger:
         logging.config.dictConfig(LOGGING_APPLICATION_CONF)
         logger = logging.getLogger('app')
         handlers = logger.handlers
-        handler = logging.StreamHandler()
         logger.handlers = []
         logger.addHandler(handlers[0])
         return logger

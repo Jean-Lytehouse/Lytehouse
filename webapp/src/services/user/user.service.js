@@ -36,21 +36,19 @@ function login(email, password) {
 }
 
 function create(user) {
+  console.log("In create user");
+  console.log(user);
   return axios
     .post(baseUrl + `/api/v1/user`, {
       email: user.email,
       firstname: user.firstName,
       lastname: user.lastName,
-      user_title: user.title,
-      nationality_country_id: user.nationality,
-      residence_country_id: user.residence,
-      user_gender: user.gender,
-      affiliation: user.affiliation,
-      department: user.department,
-      user_disability: user.disability,
-      user_category_id: user.category,
-      user_dateOfBirth: new Date(user.dateOfBirth).toISOString(),
-      user_primaryLanguage: user.primaryLanguage,
+      camera1Ip: user.camera1Ip,
+      camera1Name: user.camera1Name,
+      camera2Ip: user.camera2Ip,
+      camera2Name: user.camera2Name,
+      camera3Ip: user.camera3Ip,
+      camera3Name: user.camera3Name,
       password: user.password
     })
     .then(response => {

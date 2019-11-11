@@ -14,64 +14,38 @@ class AppUser(db.Model, UserMixin):
     email = db.Column(db.String(255), unique=True, nullable=False)
     firstname = db.Column(db.String(100), nullable=False)
     lastname = db.Column(db.String(100), nullable=False)
-    user_title = db.Column(db.String(20), nullable=False)
-    nationality_country_id = db.Column(db.Integer(), db.ForeignKey('country.id'), nullable=False)
-    residence_country_id = db.Column(db.Integer(), db.ForeignKey('country.id'), nullable=False)
-    user_gender = db.Column(db.String(20), nullable=False)
-    affiliation = db.Column(db.String(255), nullable=False)
-    department = db.Column(db.String(255), nullable=False)
-    user_disability = db.Column(db.String(255), nullable=False)
-    user_category_id = db.Column(db.Integer(), db.ForeignKey('user_category.id'), nullable=False)
-    user_dateOfBirth = db.Column(db.DateTime(), nullable=True)
-    user_primaryLanguage = db.Column(db.String(255), nullable=True)
+    camera1Ip = db.Column(db.String(100), nullable=False)
+    camera1Name = db.Column(db.String(100), nullable=False)
+    camera2Ip = db.Column(db.String(100), nullable=False)
+    camera2Name = db.Column(db.String(100), nullable=False)
+    camera3Ip = db.Column(db.String(100), nullable=False)
+    camera3Name = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    active = db.Column(db.Boolean(), nullable=False)
-    is_admin = db.Column(db.Boolean(), nullable=False)
-    is_deleted = db.Column(db.Boolean(), nullable=False)
-    deleted_datetime_utc = db.Column(db.DateTime(), nullable=True)
     verified_email = db.Column(db.Boolean(), nullable=True)
     verify_token = db.Column(db.String(255), nullable=True, unique=True, default=make_code)
-
-    nationality_country = db.relationship('Country', foreign_keys=[nationality_country_id])
-    residence_country = db.relationship('Country', foreign_keys=[residence_country_id])
-    user_category = db.relationship('UserCategory')
-    event_roles = db.relationship('EventRole')
 
     def __init__(self,
                  email,
                  firstname,
                  lastname,
-                 user_title,
-                 nationality_country_id,
-                 residence_country_id,
-                 user_gender,
-                 affiliation,
-                 department,
-                 user_disability,
-                 user_category_id,
-                 user_dateOfBirth,
-                 user_primaryLanguage,
-                 password,
-                 is_admin=False):
+                 camera1Ip,
+                 camera1Name,
+                 camera2Ip,
+                 camera2Name,
+                 camera3Ip,
+                 camera3Name,   
+                 password):
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
-        self.user_title = user_title
-        self.nationality_country_id = nationality_country_id
-        self.residence_country_id = residence_country_id
-        self.user_gender = user_gender
-        self.affiliation = affiliation
-        self.department = department
-        self.user_disability = user_disability
-        self.user_category_id = user_category_id
-        self.user_dateOfBirth = user_dateOfBirth
-        self.user_primaryLanguage = user_primaryLanguage
+        self.camera1Ip = camera1Ip
+        self.camera1Name = camera1Name
+        self.camera2Ip = camera2Ip
+        self.camera2Name = camera2Name
+        self.camera3Ip = camera3Ip
+        self.camera3Name = camera3Name
         self.set_password(password)
-        self.active = True
-        self.is_admin = is_admin
-        self.is_deleted = False
-        self.deleted_datetime_utc = None
-        self.verified_email = False
+        self.verified_email = True
 
     def set_password(self, password):
         self.password = bcrypt.generate_password_hash(password)
@@ -90,29 +64,8 @@ class AppUser(db.Model, UserMixin):
     def delete(self):
         self.is_deleted = True
         self.deleted_datetime_utc = datetime.now()
+
     
-    def is_event_admin(self, event_id):
-        if self.is_admin:
-            return True
-        
-        if self.event_roles is None:
-            return False
-
-        for event_role in self.event_roles:
-            if event_role.event_id == event_id and event_role.role == 'admin':
-                return True
-        
-        return False
-    
-    def is_reviewer(self, event_id):
-        if self.event_roles is None:
-            return False
-
-        for event_role in self.event_roles:
-            if event_role.event_id == event_id and event_role.role == 'reviewer':
-                return True
-
-        return False
 
 class PasswordReset(db.Model):
 
@@ -127,46 +80,3 @@ class PasswordReset(db.Model):
 
     def __init__(self, user):
         self.user = user
-
-
-class Country(db.Model):
-
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-
-    def __init__(self, name):
-        self.name = name
-
-
-class UserCategory(db.Model):
-
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(500))
-    group = db.Column(db.String(100))
-
-    def __init__(self, name, description=None, group=None):
-        self.name = name
-        self.description = description
-        self.group = group
-
-
-class UserComment(db.Model):
-
-    id = db.Column(db.Integer(), primary_key=True)
-    event_id = db.Column(db.Integer(), db.ForeignKey('event.id'), nullable=False)
-    user_id = db.Column(db.Integer(), db.ForeignKey('app_user.id'), nullable=False)
-    comment_by_user_id = db.Column(db.Integer(), db.ForeignKey('app_user.id'), nullable=False)
-    timestamp = db.Column(db.DateTime(), nullable=False)
-    comment = db.Column(db.String(2000))
-
-    event = db.relationship('Event')
-    user = db.relationship('AppUser', foreign_keys=[user_id])
-    comment_by_user = db.relationship('AppUser', foreign_keys=[comment_by_user_id])
-
-    def __init__(self, event_id, user_id, comment_by_user_id, timestamp, comment):
-        self.event_id = event_id
-        self.user_id = user_id
-        self.comment_by_user_id = comment_by_user_id
-        self.timestamp = timestamp
-        self.comment = comment

@@ -2,38 +2,28 @@ import React, { Component } from "react";
 import { userService } from "../../../services/user";
 import { withRouter } from "react-router";
 import FormTextBox from "../../../components/form/FormTextBox";
-import FormSelect from "../../../components/form/FormSelect";
 import validationFields from "../../../utils/validation/validationFields";
-import {
-  getTitleOptions,
-  getCounties,
-  getGenderOptions,
-  getCategories,
-  getDisabilityOptions
-} from "../../../utils/validation/contentHelpers";
 import { run, ruleRunner } from "../../../utils/validation/ruleRunner";
 import {
   requiredText,
-  requiredDropdown,
   validEmail
 } from "../../../utils/validation/rules.js";
 import { createColClassName } from "../../../utils/styling/styling";
 
 const fieldValidations = [
-  ruleRunner(validationFields.title, requiredDropdown),
   ruleRunner(validationFields.firstName, requiredText),
   ruleRunner(validationFields.lastName, requiredText),
+  // ruleRunner(validationFields.phoneNumber, requiredText),
   ruleRunner(validationFields.email, validEmail),
-  ruleRunner(validationFields.nationality, requiredDropdown),
-  ruleRunner(validationFields.residence, requiredDropdown),
-  ruleRunner(validationFields.gender, requiredDropdown),
-  ruleRunner(validationFields.affiliation, requiredText),
-  ruleRunner(validationFields.department, requiredText),
-  ruleRunner(validationFields.disability, requiredText),
   ruleRunner(validationFields.password, requiredText),
   ruleRunner(validationFields.confirmPassword, requiredText),
-  ruleRunner(validationFields.category, requiredDropdown),
-  ruleRunner(validationFields.primaryLanguage, requiredText)
+  ruleRunner(validationFields.camera1Ip, requiredText),
+  ruleRunner(validationFields.camera1Name, requiredText),
+  ruleRunner(validationFields.camera1Ip, requiredText),
+  ruleRunner(validationFields.camera2Name, requiredText),
+  ruleRunner(validationFields.camera2Ip, requiredText),
+  ruleRunner(validationFields.camera3Name, requiredText),
+  ruleRunner(validationFields.camera3Ip, requiredText),
 ];
 
 class CreateAccountForm extends Component {
@@ -43,18 +33,20 @@ class CreateAccountForm extends Component {
     this.state = {
       user: {
         email: "",
+        // phoneNumber: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        camera1Ip: "",
+        camera1Name: "",
+        camera2Ip: "",
+        camera2Name: "",
+        camera3Ip: "",
+        camera3Name: "",
       },
       showErrors: false,
       submitted: false,
       loading: false,
       errors: [],
-      categoryOptions: [],
-      countryOptions: [],
-      titleOptions: [],
-      genderOptions: [],
-      disabilityOptions: [],
       error: "",
       created: false
     };
@@ -75,28 +67,20 @@ class CreateAccountForm extends Component {
   }
 
   componentWillMount() {
-    Promise.all([
-      getTitleOptions,
-      getGenderOptions,
-      getCounties,
-      getCategories,
-      getDisabilityOptions
-    ]).then(result => {
-      this.setState({
-        titleOptions: this.checkOptionsList(result[0]),
-        genderOptions: this.checkOptionsList(result[1]),
-        countryOptions: this.checkOptionsList(result[2]),
-        categoryOptions: this.checkOptionsList(result[3]),
-        disabilityOptions: this.checkOptionsList(result[4])
-      });
-    });
   }
 
   validateForm() {
     return (
       this.state.user.email.length > 0 &&
+      // this.state.user.phoneNumber.length > 0 &&
       this.state.user.password.length > 0 &&
-      this.state.user.confirmPassword.length > 0
+      this.state.user.confirmPassword.length > 0 &&
+      this.state.user.camera1Ip.length > 0 &&
+      this.state.user.camera1Name.length > 0 &&
+      this.state.user.camera2Ip.length > 0 &&
+      this.state.user.camera2Name.length > 0 &&
+      this.state.user.camera3Ip.length > 0 &&
+      this.state.user.camera3Name.length > 0 
     );
   }
 
@@ -108,7 +92,7 @@ class CreateAccountForm extends Component {
           [name]: dropdown.value
         }
       },
-      function() {
+      function () {
         let errorsForm = run(this.state.user, fieldValidations);
         this.setState({ errors: { $set: errorsForm } });
       }
@@ -124,7 +108,7 @@ class CreateAccountForm extends Component {
             [field.name]: event.target.value
           }
         },
-        function() {
+        function () {
           let errorsForm = run(this.state.user, fieldValidations);
           this.setState({ errors: { $set: errorsForm } });
         }
@@ -179,25 +163,21 @@ class CreateAccountForm extends Component {
     const md = 6;
     const lg = 6;
     const commonColClassName = createColClassName(xs, sm, md, lg);
-    const colClassNameTitle = createColClassName(12, 3, 2, 2);
     const colClassNameSurname = createColClassName(12, 3, 4, 4);
     const colClassEmailLanguageDob = createColClassName(12, 4, 4, 4);
     const {
       firstName,
       lastName,
       email,
-      title,
-      nationality,
-      residence,
-      gender,
-      affiliation,
-      department,
-      disability,
-      category,
+      camera1Ip,
+      camera1Name,
+      camera2Ip,
+      camera2Name,
+      camera3Ip,
+      camera3Name,
+      // phoneNumber,
       password,
       confirmPassword,
-      dateOfBirth,
-      primaryLanguage
     } = this.state.user;
 
     const { loading, errors, showErrors, error, created } = this.state;
@@ -207,7 +187,7 @@ class CreateAccountForm extends Component {
         <div className="CreateAccount">
           <p className="h5 text-center mb-4">Create Account</p>
           <p className="account-created">
-            Your Baobab account has been created, but before you can use it, we
+            Your Lytehouse account has been created, but before you can use it, we
             need to verify your email address. Please check your email (and spam
             folder) for a message containing a link to verify your email
             address.
@@ -216,40 +196,11 @@ class CreateAccountForm extends Component {
       );
     }
 
-    const titleValue = this.getContentValue(this.state.titleOptions, title);
-    const nationalityValue = this.getContentValue(
-      this.state.countryOptions,
-      nationality
-    );
-    const residenceValue = this.getContentValue(
-      this.state.countryOptions,
-      residence
-    );
-    const genderValue = this.getContentValue(this.state.genderOptions, gender);
-    const categoryValue = this.getContentValue(
-      this.state.categoryOptions,
-      category
-    );
-    const disabilityValue = this.getContentValue(
-      this.state.disabilityOptions,
-      disability
-    );
-
     return (
       <div className="CreateAccount">
         <form onSubmit={this.handleSubmit}>
           <p className="h5 text-center mb-4">Create Account</p>
           <div class="row">
-            <div class={colClassNameTitle}>
-              <FormSelect
-                options={this.state.titleOptions}
-                id={validationFields.title.name}
-                placeholder={validationFields.title.display}
-                onChange={this.handleChangeDropdown}
-                value={titleValue}
-                label={validationFields.title.display}
-              />
-            </div>
             <div class={colClassNameSurname}>
               <FormTextBox
                 id={validationFields.firstName.name}
@@ -270,16 +221,6 @@ class CreateAccountForm extends Component {
                 label={validationFields.lastName.display}
               />
             </div>
-            <div class={colClassNameTitle}>
-              <FormSelect
-                options={this.state.genderOptions}
-                id={validationFields.gender.name}
-                placeholder={validationFields.gender.display}
-                onChange={this.handleChangeDropdown}
-                value={genderValue}
-                label={validationFields.gender.display}
-              />
-            </div>
           </div>
           <div class="row">
             <div class={colClassEmailLanguageDob}>
@@ -292,96 +233,84 @@ class CreateAccountForm extends Component {
                 label={validationFields.email.display}
               />
             </div>
+            {/* <div class={colClassEmailLanguageDob}>
+              <FormTextBox
+                id={validationFields.phoneNumber.name}
+                type="text"
+                placeholder={validationFields.phoneNumber.display}
+                onChange={this.handleChange(validationFields.phoneNumber)}
+                value={phoneNumber}
+                label={validationFields.phoneNumber.display}
+              />
+            </div> */}
+          </div>
+          <div class="row">
             <div class={colClassEmailLanguageDob}>
               <FormTextBox
-                id={validationFields.dateOfBirth.name}
-                type="date"
-                placeholder={validationFields.dateOfBirth.display}
-                onChange={this.handleChange(validationFields.dateOfBirth)}
-                value={dateOfBirth}
-                label={validationFields.dateOfBirth.display}
+                id={validationFields.camera1Ip.name}
+                type="text"
+                placeholder={validationFields.camera1Ip.display}
+                onChange={this.handleChange(validationFields.camera1Ip)}
+                value={camera1Ip}
+                label={validationFields.camera1Ip.display}
               />
             </div>
             <div class={colClassEmailLanguageDob}>
               <FormTextBox
-                id={validationFields.primaryLanguage.name}
+                id={validationFields.camera1Name.name}
                 type="text"
-                placeholder={validationFields.primaryLanguage.display}
-                onChange={this.handleChange(validationFields.primaryLanguage)}
-                value={primaryLanguage}
-                label={validationFields.primaryLanguage.display}
+                placeholder={validationFields.camera1Name.display}
+                onChange={this.handleChange(validationFields.camera1Name)}
+                value={camera1Name}
+                label={validationFields.camera1Name.display}
               />
             </div>
           </div>
           <div class="row">
-            <div class={commonColClassName}>
-              <FormSelect
-                options={this.state.countryOptions}
-                id={validationFields.nationality.name}
-                placeholder={validationFields.nationality.display}
-                onChange={this.handleChangeDropdown}
-                value={nationalityValue}
-                label={validationFields.nationality.display}
-              />
-            </div>
-            <div class={commonColClassName}>
-              <FormSelect
-                options={this.state.countryOptions}
-                id={validationFields.residence.name}
-                placeholder={validationFields.residence.display}
-                onChange={this.handleChangeDropdown}
-                value={residenceValue}
-                label={validationFields.residence.display}
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class={commonColClassName}>
+            <div class={colClassEmailLanguageDob}>
               <FormTextBox
-                id={validationFields.affiliation.name}
+                id={validationFields.camera2Ip.name}
                 type="text"
-                placeholder={validationFields.affiliation.display}
-                onChange={this.handleChange(validationFields.affiliation)}
-                value={affiliation}
-                label={validationFields.affiliation.display}
-                description={validationFields.affiliation.description}
+                placeholder={validationFields.camera2Ip.display}
+                onChange={this.handleChange(validationFields.camera2Ip)}
+                value={camera2Ip}
+                label={validationFields.camera2Ip.display}
               />
             </div>
-            <div class={commonColClassName}>
+            <div class={colClassEmailLanguageDob}>
               <FormTextBox
-                id={validationFields.department.name}
+                id={validationFields.camera2Name.name}
                 type="text"
-                placeholder={validationFields.department.display}
-                onChange={this.handleChange(validationFields.department)}
-                value={department}
-                label={validationFields.department.display}
-                description={validationFields.department.description}
+                placeholder={validationFields.camera2Name.display}
+                onChange={this.handleChange(validationFields.camera2Name)}
+                value={camera2Name}
+                label={validationFields.camera2Name.display}
               />
             </div>
           </div>
           <div class="row">
-            <div class={commonColClassName}>
-              <FormSelect
-                options={this.state.disabilityOptions}
-                id={validationFields.disability.name}
-                placeholder={validationFields.disability.display}
-                onChange={this.handleChangeDropdown}
-                value={disabilityValue}
-                label={validationFields.disability.display}
-                description={validationFields.disability.description}
+            <div class={colClassEmailLanguageDob}>
+              <FormTextBox
+                id={validationFields.camera3Ip.name}
+                type="text"
+                placeholder={validationFields.camera3Ip.display}
+                onChange={this.handleChange(validationFields.camera3Ip)}
+                value={camera3Ip}
+                label={validationFields.camera3Ip.display}
               />
             </div>
-            <div class={commonColClassName}>
-              <FormSelect
-                options={this.state.categoryOptions}
-                id={validationFields.category.name}
-                placeholder={validationFields.category.display}
-                onChange={this.handleChangeDropdown}
-                value={categoryValue}
-                label={validationFields.category.display}
-                description={validationFields.category.description}
+            <div class={colClassEmailLanguageDob}>
+              <FormTextBox
+                id={validationFields.camera3Name.name}
+                type="text"
+                placeholder={validationFields.camera3Name.display}
+                onChange={this.handleChange(validationFields.camera3Name)}
+                value={camera3Name}
+                label={validationFields.camera3Name.display}
               />
             </div>
+          </div>
+          <div class="row">
           </div>
           <div class="row">
             <div class={commonColClassName}>

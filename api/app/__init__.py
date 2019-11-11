@@ -34,10 +34,7 @@ manager.add_command('db', MigrateCommand)
 
 # set optional bootswatch theme
 app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
-from applicationModel.models import Question, Section
-from responses.models import Response, Answer
-from users.models import UserCategory, AppUser
-from events.models import Event, EventRole
+from users.models import AppUser
 from app.utils.auth import auth_required, admin_required, generate_token
 from app.utils.errors import UNAUTHORIZED, FORBIDDEN
 
@@ -114,7 +111,7 @@ class BaobabAdminIndexView(AdminIndexView):
 # Initialize flask-login
 init_login()
 
-admin = Admin(app, name='Deep Learning Indaba Admin Portal', index_view=BaobabAdminIndexView(), template_mode='bootstrap3')
+admin = Admin(app, name='Lytehouse Admin Portal', index_view=BaobabAdminIndexView(), template_mode='bootstrap3')
 
 
 class BaobabModelView(ModelView):
@@ -125,14 +122,6 @@ class BaobabModelView(ModelView):
         # redirect to login page if user doesn't have access
         return redirect(url_for('admin.login_view', next=request.url))
 
-admin.add_view(BaobabModelView(Question, db.session))
-admin.add_view(BaobabModelView(Section, db.session))
-admin.add_view(BaobabModelView(Response, db.session))
-admin.add_view(BaobabModelView(Answer, db.session))
-
-admin.add_view(BaobabModelView(Event, db.session))
-admin.add_view(BaobabModelView(EventRole, db.session))
-admin.add_view(BaobabModelView(UserCategory, db.session))
 admin.add_view(BaobabModelView(AppUser, db.session))
 
 

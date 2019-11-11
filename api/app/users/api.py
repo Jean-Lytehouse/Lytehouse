@@ -5,10 +5,9 @@ import flask_restful as restful
 from flask_restful import reqparse, fields, marshal_with
 from sqlalchemy.exc import IntegrityError
 
-from app.users.models import AppUser, PasswordReset, UserComment
+from app.users.models import AppUser, PasswordReset
 from app.users.mixins import SignupMixin, AuthenticateMixin, UserProfileListMixin
 from app.users.repository import UserRepository as user_repository
-from app.events.models import EventRole
 
 from app.utils.auth import auth_required, admin_required, generate_token
 from app.utils.errors import EMAIL_IN_USE, RESET_PASSWORD_CODE_NOT_VALID, BAD_CREDENTIALS, EMAIL_NOT_VERIFIED, EMAIL_VERIFY_CODE_NOT_VALID, USER_NOT_FOUND, RESET_PASSWORD_CODE_EXPIRED, USER_DELETED, FORBIDDEN
@@ -22,24 +21,24 @@ from config import BOABAB_HOST
 VERIFY_EMAIL_BODY = """
 Dear {} {} {},
 
-Thank you for creating a new Baobab account. Please use the following link to verify your email address:
+Thank you for creating a new Lytehouse account. Please use the following link to verify your email address:
 
 {}/verifyEmail?token={}
 
 Kind Regards,
-The Baobab Team
+The Lytehouse Team
 """
 
 RESET_EMAIL_BODY = """
 Dear {} {} {},
 
-You recently requested a password reset on Baobab, please use the following link to reset you password:
+You recently requested a password reset on Lytehouse, please use the following link to reset you password:
 {}/resetPassword?resetToken={}
 
-If you did not request a password reset, please ignore this email and contact the Deep Learning Indaba organisers.
+If you did not request a password reset, please ignore this email and contact the Lytehouse team.
 
 Kind Regards,
-The Baobab Team
+The Lytehouse Team
 """
 
 user_fields = {
@@ -47,42 +46,29 @@ user_fields = {
     'email': fields.String,
     'firstname': fields.String,
     'lastname': fields.String,
-    'user_title': fields.String,
-    'nationality_country_id': fields.Integer,
-    'nationality_country': fields.String(attribute='nationality_country.name'),
-    'residence_country_id': fields.Integer,
-    'residence_country': fields.String(attribute='residence_country.name'),
-    'user_gender': fields.String,
-    'user_dateOfBirth': fields.DateTime('iso8601'),
-    'user_primaryLanguage': fields.String,
-    'affiliation': fields.String,
-    'department': fields.String,
-    'user_disability': fields.String,
-    'user_category_id': fields.Integer,
-    'user_category': fields.String(attribute='user_category.name')
+    'camera1Ip': fields.String,
+    'camera1Name': fields.String,
+    'camera2Ip': fields.String,
+    'camera2Name': fields.String,
+    'camera3Ip': fields.String,
+    'camera3Name': fields.String,
+    'password': fields.String
 }
 
 
-user_comment_fields = {
-    'id': fields.Integer,
-    'event_id': fields.Integer,
-    'user_id': fields.Integer,
-    'comment_by_user_firstname':  fields.String(attribute='comment_by_user.firstname'),
-    'comment_by_user_lastname':  fields.String(attribute='comment_by_user.lastname'),
-    'timestamp': fields.DateTime('iso8601'),
-    'comment': fields.String
-}
-
-
-def user_info(user, roles):
+def user_info(user):
     return {
         'id': user.id,
         'token': generate_token(user),
         'firstname': user.firstname,
         'lastname': user.lastname,
-        'title': user.user_title,
-        'is_admin': user.is_admin,
-        'roles': [{'event_id': event_role.event_id, 'role': event_role.role} for event_role in roles]
+        'email': user.email,
+        'camera1Ip': user.camera1Ip,
+        'camera1Name': user.camera1Name,
+        'camera2Ip': user.camera2Ip,
+        'camera2Name': user.camera2Name,
+        'camera3Ip': user.camera3Ip,
+        'camera3Name': user.camera3Name
     }
 
 
@@ -105,55 +91,49 @@ class UserAPI(SignupMixin, restful.Resource):
         email = args['email']
         firstname = args['firstname']
         lastname = args['lastname']
-        user_title = args['user_title']
-        nationality_country_id = args['nationality_country_id']
-        residence_country_id = args['residence_country_id']
-        user_gender = args['user_gender']
-        affiliation = args['affiliation']
-        department = args['department']
-        user_disability = args['user_disability']
-        user_category_id = args['user_category_id']
+        camera1Ip = args['camera1Ip']
+        camera1Name = args['camera1Name']
+        camera2Ip = args['camera2Ip']
+        camera2Name = args['camera2Name']
+        camera3Ip = args['camera3Ip']
+        camera3Name = args['camera3Name']
         password = args['password']
-        user_dateOfBirth = datetime.strptime(
-            (args['user_dateOfBirth']), '%Y-%m-%dT%H:%M:%S.%fZ')
-        user_primaryLanguage = args['user_primaryLanguage']
 
-        LOGGER.info("Registering email: {}".format(email))
+        LOGGER.info("Registering email: {} ".format(email))
 
         user = AppUser(
             email=email,
             firstname=firstname,
             lastname=lastname,
-            user_title=user_title,
-            nationality_country_id=nationality_country_id,
-            residence_country_id=residence_country_id,
-            user_gender=user_gender,
-            affiliation=affiliation,
-            department=department,
-            user_disability=user_disability,
-            user_category_id=user_category_id,
-            user_dateOfBirth=user_dateOfBirth,
-            user_primaryLanguage=user_primaryLanguage,
-            password=password)
+            camera1Ip = camera1Ip,
+            camera1Name = camera1Name,
+            camera2Ip = camera2Ip,
+            camera2Name = camera2Name,
+            camera3Ip = camera3Ip,
+            camera3Name = camera3Name,
+            password = password)
+
+        LOGGER.info("User")
+        LOGGER.info(user)
 
         db.session.add(user)
 
         try:
             db.session.commit()
-        except IntegrityError:
+        except IntegrityError as e:
             LOGGER.error("email: {} already in use".format(email))
+            LOGGER.error(e)
             return EMAIL_IN_USE
 
-        send_mail(recipient=user.email,
-                  subject='Baobab Email Verification',
-                  body_text=VERIFY_EMAIL_BODY.format(
-                      user_title, firstname, lastname,
-                      get_baobab_host(),
-                      user.verify_token))
+        # send_mail(recipient=user.email,
+        #           subject='Lytehouse Email Verification',
+        #           body_text=VERIFY_EMAIL_BODY.format(firstname, lastname,
+        #               get_baobab_host(),
+        #               user.verify_token))
 
         LOGGER.debug("Sent verification email to {}".format(user.email))
 
-        return user_info(user, []), 201
+        return user_info(user), 201
 
     @auth_required
     def put(self):
@@ -162,17 +142,12 @@ class UserAPI(SignupMixin, restful.Resource):
         email = args['email']
         firstname = args['firstname']
         lastname = args['lastname']
-        user_title = args['user_title']
-        nationality_country_id = args['nationality_country_id']
-        residence_country_id = args['residence_country_id']
-        user_gender = args['user_gender']
-        affiliation = args['affiliation']
-        department = args['department']
-        user_disability = args['user_disability']
-        user_category_id = args['user_category_id']
-        user_dateOfBirth = datetime.strptime((args['user_dateOfBirth']), '%Y-%m-%dT%H:%M:%S.%fZ')
-        user_primaryLanguage = args['user_primaryLanguage']
-
+        camera1Ip = args['camera1Ip']
+        camera1Name = args['camera1Name']
+        camera2Ip = args['camera2Ip']
+        camera2Name = args['camera2Name']
+        camera3Ip = args['camera3Ip']
+        camera3Name = args['camera3Name']
         user = db.session.query(AppUser).filter(
             AppUser.id == g.current_user['id']).first() 
         
@@ -181,16 +156,12 @@ class UserAPI(SignupMixin, restful.Resource):
 
         user.firstname = firstname
         user.lastname = lastname
-        user.user_title = user_title
-        user.nationality_country_id = nationality_country_id
-        user.residence_country_id = residence_country_id
-        user.user_gender = user_gender
-        user.affiliation = affiliation
-        user.department = department
-        user.user_disability = user_disability
-        user.user_category_id = user_category_id
-        user.user_dateOfBirth = user_dateOfBirth
-        user.user_primaryLanguage = user_primaryLanguage
+        user.camera1Ip = camera1Ip
+        user.camera1Name = camera1Name
+        user.camera2Ip = camera2Ip
+        user.camera2Name = camera2Name
+        user.camera3Ip = camera3Ip
+        user.camera3Name = camera3Name
 
         try:
             db.session.commit()
@@ -199,18 +170,16 @@ class UserAPI(SignupMixin, restful.Resource):
             return EMAIL_IN_USE
 
         if not user.verified_email:
-            send_mail(recipient=user.email,
-                    subject='Baobab Email Re-Verification',
-                    body_text=VERIFY_EMAIL_BODY.format(
-                        user_title, firstname, lastname,
-                        get_baobab_host(),
-                        user.verify_token))
+            # send_mail(recipient=user.email,
+            #         subject='Lytehouse Email Re-Verification',
+            #         body_text=VERIFY_EMAIL_BODY.format(firstname, lastname,
+            #             get_baobab_host(),
+            #             user.verify_token))
 
             LOGGER.debug("Sent re-verification email to {}".format(user.email))
 
-        roles = db.session.query(EventRole).filter(EventRole.user_id == user.id).all()
 
-        return user_info(user, roles), 200
+        return user_info(user), 200
 
     @auth_required
     def delete(self):
@@ -235,23 +204,15 @@ class UserProfileView():
     def __init__(self, user_response):
         self.user_id = user_response.AppUser.id
         self.email = user_response.AppUser.email
-        self.affiliation = user_response.AppUser.affiliation
-        self.department = user_response.AppUser.department
         self.firstname = user_response.AppUser.firstname
         self.lastname = user_response.AppUser.lastname
-        self.nationality_country = user_response.AppUser.nationality_country.name
-        self.residence_country = user_response.AppUser.residence_country.name
-        self.user_category = user_response.AppUser.user_category.name
-        self.user_disability = user_response.AppUser.user_disability
-        self.user_gender = user_response.AppUser.user_gender
-        self.user_title = user_response.AppUser.user_title
-        self.user_dateOfBirth = user_response.AppUser.user_dateOfBirth
-        self.user_primaryLanguage = user_response.AppUser.user_primaryLanguage
-        self.response_id = user_response.Response.id
-        self.is_submitted = user_response.Response.is_submitted
-        self.submitted_timestamp = user_response.Response.submitted_timestamp
-        self.is_withdrawn = user_response.Response.is_withdrawn
-        self.withdrawn_timestamp = user_response.Response.withdrawn_timestamp
+        self.camera1Ip = user_response.AppUser.camera1Ip
+        self.camera1Name = user_response.AppUser.camera1Name
+        self.camera2Ip = user_response.AppUser.camera2Ip
+        self.camera2Name = user_response.AppUser.camera2Name
+        self.camera3Ip = user_response.AppUser.camera3Ip
+        self.camera3Name = user_response.AppUser.camera3Name
+
         
 
 class UserProfileList(UserProfileListMixin, restful.Resource):
@@ -261,38 +222,28 @@ class UserProfileList(UserProfileListMixin, restful.Resource):
         'email': fields.String,
         'firstname': fields.String,
         'lastname': fields.String,
-        'user_title': fields.String,
-        'nationality_country': fields.String,
-        'residence_country': fields.String,
-        'user_gender': fields.String,
-        'user_dateOfBirth': fields.DateTime('iso8601'),
-        'user_primaryLanguage': fields.String,
-        'affiliation': fields.String,
-        'department': fields.String,
-        'user_disability': fields.String,
-        'user_category_id': fields.Integer,
-        'user_category': fields.String,
-        'response_id': fields.Integer,
-        'is_submitted': fields.Boolean,
-        'submitted_timestamp': fields.DateTime('iso8601'),
-        'is_withdrawn': fields.Boolean,
-        'withdrawn_timestamp': fields.DateTime('iso8601')
+        'camera1Ip': fields.String,
+        'camera1Name': fields.String,
+        'camera2Ip': fields.String,
+        'camera2Name': fields.String,
+        'camera3Ip': fields.String,
+        'camera3Name': fields.String,
     }
 
-    @marshal_with(user_profile_list_fields)
-    @auth_required
-    def get(self):
-        args = self.req_parser.parse_args()
-        event_id = args['event_id']
-        current_user_id = g.current_user['id']
+    # @marshal_with(user_profile_list_fields)
+    # @auth_required
+    # def get(self):
+    #     args = self.req_parser.parse_args()
+    #     event_id = args['event_id']
+    #     current_user_id = g.current_user['id']
 
-        current_user = user_repository.get_by_id(current_user_id)
-        if not current_user.is_event_admin(event_id):
-            return FORBIDDEN
+    #     current_user = user_repository.get_by_id(current_user_id)
+    #     if not current_user.is_event_admin(event_id):
+    #         return FORBIDDEN
 
-        user_responses = user_repository.get_all_with_responses_for(event_id)
-        views = [UserProfileView(user_response) for user_response in user_responses]
-        return views
+    #     user_responses = user_repository.get_all_with_responses_for(event_id)
+    #     views = [UserProfileView(user_response) for user_response in user_responses]
+    #     return views
 
 
 class AuthenticationAPI(AuthenticateMixin, restful.Resource):
@@ -306,18 +257,17 @@ class AuthenticationAPI(AuthenticateMixin, restful.Resource):
         LOGGER.debug("Authenticating user: {}".format(args['email']))
 
         if user:
-            if user.is_deleted:
-                LOGGER.debug("Failed to authenticate, user {} deleted".format(args['email'])) 
-                return USER_DELETED
+            # if user.is_deleted:
+            #     LOGGER.debug("Failed to authenticate, user {} deleted".format(args['email'])) 
+            #     return USER_DELETED
 
-            if not user.verified_email:
-                LOGGER.debug("Failed to authenticate, email {} not verified".format(args['email']))
-                return EMAIL_NOT_VERIFIED
+            # if not user.verified_email:
+            #     LOGGER.debug("Failed to authenticate, email {} not verified".format(args['email']))
+            #     return EMAIL_NOT_VERIFIED
 
             if bcrypt.check_password_hash(user.password, args['password']):
                 LOGGER.debug("Successful authentication for email: {}".format(args['email']))
-                roles = db.session.query(EventRole).filter(EventRole.user_id == user.id).all()
-                return user_info(user, roles)
+                return user_info(user)
 
         else:
             LOGGER.debug("User not found for {}".format(args['email']))
@@ -346,11 +296,10 @@ class PasswordResetRequestAPI(restful.Resource):
         db.session.add(password_reset)
         db.session.commit()
 
-        send_mail(recipient=args['email'],
-                  subject='Password Reset for Deep Learning Indaba portal',
-                  body_text=RESET_EMAIL_BODY.format(
-            user.user_title, user.firstname, user.lastname,
-            get_baobab_host(), password_reset.code))
+        # send_mail(recipient=args['email'],
+        #           subject='Password Reset for Lytehouse portal',
+        #           body_text=RESET_EMAIL_BODY.format(user.firstname, user.lastname,
+        #     get_baobab_host(), password_reset.code))
 
         return {}, 201
 
@@ -423,57 +372,12 @@ class ResendVerificationEmailAPI(restful.Resource):
             LOGGER.debug("User not found for email: {}".format(email))
             return USER_NOT_FOUND
 
-        send_mail(recipient=user.email,
-                  subject='Baobab Email Verification',
-                  body_text=VERIFY_EMAIL_BODY.format(
-                      user.user_title, user.firstname, user.lastname,
-                      get_baobab_host(),
-                      user.verify_token))
+        # send_mail(recipient=user.email,
+        #           subject='Lytehouse Email Verification',
+        #           body_text=VERIFY_EMAIL_BODY.format(user.firstname, user.lastname,
+        #               get_baobab_host(),
+        #               user.verify_token))
 
         LOGGER.debug("Resent email verification to: {}".format(email))
 
         return {}, 201
-
-
-class AdminOnlyAPI(restful.Resource):
-
-    @admin_required
-    def get(self):
-        return {}, 200
-
-
-class UserCommentAPI(restful.Resource):
-
-    @auth_required
-    def post(self):
-        req_parser = reqparse.RequestParser()
-        req_parser.add_argument('event_id', type=int, required=False)
-        req_parser.add_argument('user_id', type=int, required=False)
-        req_parser.add_argument('comment', type=str, required=False)
-        args = req_parser.parse_args()
-
-        current_user_id = g.current_user['id']
-        comment = UserComment(args['event_id'], args['user_id'], current_user_id, datetime.now(), args['comment'])
-
-        db.session.add(comment)
-        db.session.commit()
-
-        return {}, 201
-
-    @auth_required
-    @marshal_with(user_comment_fields)
-    def get(self):
-        req_parser = reqparse.RequestParser()
-        req_parser.add_argument('event_id', type=int, required=True)
-        req_parser.add_argument('user_id', type=int, required=True)
-        args = req_parser.parse_args()
-        
-        current_user = user_repository.get_by_id(g.current_user['id'])
-        if not current_user.is_event_admin(args['event_id']):
-            return FORBIDDEN
-
-        comments = db.session.query(UserComment).filter(
-            UserComment.event_id == args['event_id'], 
-            UserComment.user_id == args['user_id']).all()
-
-        return comments

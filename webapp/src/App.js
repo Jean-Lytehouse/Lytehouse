@@ -28,7 +28,7 @@ history.listen((location, action) => {
   ReactGA.pageview(location.pathname + location.search);
 });
 
-const BUG_SUBJECT_TEXT = "I encountered an bug in Baobab!";
+const BUG_SUBJECT_TEXT = "I encountered an bug in Lytehouse!";
 const BUG_BODY_TEXT = `Browser name and version:
 What I was trying to do:
 Description of problem: 
@@ -80,7 +80,7 @@ class App extends Component {
 
   render() {
     const bug_mailto =
-      "mailto:baobab@deeplearningindaba.com?subject=" +
+      "mailto:hello@lyte-house.com?subject=" +
       encodeURI(BUG_SUBJECT_TEXT) +
       "&body=" +
       encodeURI(BUG_BODY_TEXT);
@@ -97,7 +97,7 @@ class App extends Component {
                 class="d-inline-block align-top"
                 alt=""
               />
-              Baobab
+              Lytehouse
             </a>
             <button
               class="navbar-toggler"
@@ -250,14 +250,11 @@ class App extends Component {
           <footer class="text-muted">
             <div class="container-flex">
               <p>
-                Baobab, © 2019 |{" "}
-                <a href="http://www.deeplearningindaba.com">
-                  Deep Learning Indaba
+                Lytehouse, © 2019 |{" "}
+                <a href="http://www.lyte-house.com">
+                  Find out more
                 </a>{" "}
                 |{" "}
-                <a href="/PrivacyPolicy.pdf" target="_blank">
-                  Privacy Policy
-                </a>
                 <a href={bug_mailto} class="btn btn-info float-right">
                   Report a Bug
                 </a>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { userService } from "../../../services/user";
+import { cameraService } from "../../../services/cameraStream";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import { createColClassName } from "../../../utils/styling/styling";
@@ -30,7 +31,6 @@ class LoginForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.setState({ loading: true });
-
     userService.login(this.state.email, this.state.password).then(
       user => {
         console.log("Response from user service: ", user);

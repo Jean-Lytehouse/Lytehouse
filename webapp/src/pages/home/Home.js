@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import logo from '../../images/indaba-logo-dark.png';
 import './Home.css';
 import { getEvents } from "../../services/events";
+import { cameraService } from '../../services/cameraStream'
 import { NavLink } from "react-router-dom";
+import { Card, Button } from "react-bootstrap"
 
 const headings = ["Event", "Start date", "End date", "Status"];
 const fieldNames = ["description", "start_date", "end_date", "status"];
@@ -53,7 +55,7 @@ class Home extends Component {
               return (
                 <td className="Cell">
                   {
-                    this.state.rows[rowIndex][fieldNames[cellIndex]] === "Apply now" || 
+                    this.state.rows[rowIndex][fieldNames[cellIndex]] === "Apply now" ||
                       this.state.rows[rowIndex][fieldNames[cellIndex]] === "Continue application" ?
                       <NavLink to="/applicationForm">{this.state.rows[rowIndex][fieldNames[cellIndex]]}</NavLink> :
                       this.state.rows[rowIndex][fieldNames[cellIndex]]
@@ -78,9 +80,42 @@ class Home extends Component {
         <div>
           <img src={logo} className="img-fluid" alt="logo" />
         </div>
-        <h2 className="Blurb">Welcome to Baobab</h2>
-        {!this.props.user && 
-          <p class="text-center"><NavLink to="/createAccount">Sign up</NavLink> for an account in order to apply for an Indaba event, or <NavLink to="/login">login</NavLink> if you already have one.</p>}
+        <h2 className="Blurb">Welcome to Lytehouse</h2>
+        {this.props.user &&
+          <div class="row">
+            <Card style={{ width: '18rem' }}>
+              <Card.Body>
+                <Card.Title>{this.props.user.camera1Name}</Card.Title>
+                <Card.Text>
+                  IP Address: {this.props.user.camera1Ip}
+                </Card.Text>
+                <Button variant="primary" onClick={cameraService.openInNewTab(this.props.user.camera1Ip, this.props.user.camera1Name)} >View This Stream</Button>
+              </Card.Body>
+            </Card>
+
+            <Card style={{ width: '18rem' }}>
+              <Card.Body>
+                <Card.Title>{this.props.user.camera2Name}</Card.Title>
+                <Card.Text>
+                  IP Address: {this.props.user.camera2Ip}
+                </Card.Text>
+                <Button variant="primary" onClick={cameraService.openInNewTab(this.props.user.camera2Ip, this.props.user.camera2Name)}>View This Stream</Button>
+              </Card.Body>
+            </Card>
+
+            <Card style={{ width: '18rem' }}>
+              <Card.Body>
+                <Card.Title>{this.props.user.camera3Name}</Card.Title>
+                <Card.Text>
+                  IP Address: {this.props.user.camera3Ip}
+                </Card.Text>
+                <Button variant="primary" onClick={cameraService.openInNewTab(this.props.user.camera3Ip, this.props.user.camera3Name)}>View This Stream</Button>
+              </Card.Body>
+            </Card>
+          </div>
+        }
+        {!this.props.user &&
+          <p class="text-center"><NavLink to="/createAccount">Sign up</NavLink> for an account in order to add computer vision to your cameras, or <NavLink to="/login">login</NavLink> to watch the machine learning at work on your feeds.</p>}
         {this.props.user && table}
       </div>
     );
