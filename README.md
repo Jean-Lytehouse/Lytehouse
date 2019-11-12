@@ -28,7 +28,7 @@ Tasks are being managed in the Issues and Projects tabs. If you want to work on 
 * **CSS**: [Bootstrap 4](https://getbootstrap.com/)
 
 **Continuous Integration**
-We are using [CircleCI](https://circleci.com/gh/Jean-Lytehouse) to build, test and deploy the project. 
+We are using [CircleCI](https://circleci.com/gh/Lyte-house/Lytehouse) to build, test and deploy the project. 
 
 You don't need to be familar with all of these technologies to work on the project. We've tried to make the application decoupled, especially the front-end and back-end. If you want to work on a front-end task, you need to know a little Typescript, Angular and Bootstrap, but don't need to know anything about Flask/SQLAlchemy etc!  
 
@@ -51,7 +51,7 @@ If you are not familiar with this style of development, here is a more detailed 
 2. Ensure that docker is running on your machine by running ```docker run hello-world``` 
 
 3. Clone (copy to your local machine) the repository using the command:
-```git clone https://github.com/Jean-Lytehouse/Lytehouse-Pilot.git```
+```git clone https://github.com/Lyte-house/Lytehouse.git```
 
 4. Navigate to the Lytehouse folder (```cd Lytehouse```)
 
