@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Faisal",
+        "surname": "Khan",
+        "profession": "Armed Response",
+        "age": 33,
+        "phone": "+27 82 170 5838",
+        "email": "faisal_khan@example.com",
+        "photo": "assets\/images\/avatars\/male\/41.jpg",
+        "lat": -26.109690,
+        "lng": 27.795965,
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit."
+    },
+    {
+        "name": "Johann",
+        "surname": "Kühn",
+        "profession": "Armed Response",
+        "age": 32,
+        "phone": "+27 26 535 5053",
+        "email": "johann-kühn@example.com",
+        "photo": "assets\/images\/avatars\/male\/2.jpg",
+        "lat": -26.104459,
+        "lng": 27.745955,
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit."
+    },
+    {
+        "name": "Brigita",
+        "surname": "Roháček",
+        "profession": "Paramedic",
+        "age": 27,
+        "phone": "+27 82 900 1526",
+        "email": "brigita90@example.com",
+        "photo": "assets\/images\/avatars\/female\/6.jpg",
+        "lat": -26.409690,
+        "lng": 27.495965,
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit."
+    },
+    {
+        "name": "Otilia",
+        "surname": "Trașcă",
+        "profession": "Investigator",
+        "age": 28,
+        "phone": "+27 82 209 8767",
+        "email": "otilia_89@example.com",
+        "photo": "assets\/images\/avatars\/female\/12.jpg",
+        "lat": -26.409690,
+        "lng": 27.995965,
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit."
+    },
+    {
+        "name": "Capucine",
+        "surname": "Brunet",
+        "profession": "Paramedic",
+        "age": 21,
+        "phone": "+27 82 732 5276",
+        "email": "capucine-96@example.com",
+        "photo": "assets\/images\/avatars\/female\/26.jpg",
+        "lat": -26.609690,
+        "lng": 27.795965,
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit."
+    }
+]
