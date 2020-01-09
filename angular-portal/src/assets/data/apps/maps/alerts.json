@@ -1,0 +1,44 @@
+[
+    {
+        "isConfirmed": false,
+        "isResolved": false,
+        "type": "Weapon Detected",
+        "confidence": "97%",
+        "site": "The Diner",
+        "address": "4 Neethling Street",
+        "sensor": "Camera 5",
+        "owner": "Jack Kirby",
+        "photo": "assets\/images\/avatars\/male\/41.jpg",
+        "lat": -26.142690,
+        "lng": 27.910965,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+        "isConfirmed": true,
+        "isResolved": false,
+        "type": "Potential Intruder",
+        "confidence": "70%",
+        "site": "Anglo Gold Mine",
+        "address": "26 Bethelheim Street",
+        "sensor": "Camera 2",
+        "owner": "Salem Corona",
+        "photo": "assets\/images\/avatars\/male\/41.jpg",
+        "lat": -26.909690,
+        "lng": 27.815965,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+        "isConfirmed": true,
+        "isResolved": true,
+        "type": "Fire Detected",
+        "confidence": "97%",
+        "site": "Silverstar Casino",
+        "address": "29 Buitekant Street",
+        "sensor": "Camera 84",
+        "owner": "Steve Balmer",
+        "photo": "assets\/images\/avatars\/male\/41.jpg",
+        "lat": -26.209690,
+        "lng": 27.785965,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    }
+]

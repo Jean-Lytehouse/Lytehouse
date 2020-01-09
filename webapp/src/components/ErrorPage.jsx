@@ -1,0 +1,47 @@
+import { ErrorBoundary } from "react-error-boundary";
+import errorHandler from "../utils/errorHandlerUtility";
+import logo from "../images/indaba-logo-dark.png";
+import React from "react";
+
+const BUG_SUBJECT_TEXT = "I encountered an bug in Baobab!";
+const BUG_BODY_TEXT = `Browser name and version:
+What I was trying to do:
+Description of problem: 
+Error Message: 
+`;
+
+// Consider logging componentStack and error
+export const ErrorPage = ({ componentStack, error }) => {
+  if (errorHandler){
+    errorHandler.report(error.toString());
+  } 
+
+  const bug_mailto =
+    "mailto:baobab@deeplearningindaba.com?subject=" +
+    encodeURI(BUG_SUBJECT_TEXT) +
+    "&body=" +
+    encodeURI(BUG_BODY_TEXT) +
+    encodeURI(error.toString());
+
+  return (
+    <div className="Body">
+      <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center" />
+        <div>
+          <img src={logo} className="img-fluid" alt="logo" />
+        </div>
+        <h2 className="Blurb">
+          <strong>Oops! An error occured!</strong>
+        </h2>
+        <p>Here’s what we know.</p>
+        <p>
+          <strong>Error:</strong> {error.toString()}
+        </p>
+        <p>
+          Please try again and if this issue persists, please{" "}
+          <a href={bug_mailto}>get in touch</a> with us
+        </p>
+      </div>
+    </div>
+  );
+};
