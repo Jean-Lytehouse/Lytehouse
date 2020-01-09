@@ -13,6 +13,7 @@ import { DashboardComponent } from './analytics/analytics.component';
 import { EcommerceComponent } from './ecommerce/ecommerce.component';
 import { CryptoDashboardComponent } from './crypto-dashboard/crypto-dashboard.component';
 import { ProjectDashboardComponent } from './project-dashboard/project-dashboard.component';
+import { SiteManagementComponent } from './site-management/sitemanagement.component';
 
 // Components
 import { TicketsWidgetComponent } from './analytics/components/tickets-widget/tickets-widget.component';
@@ -58,6 +59,7 @@ import { CounterDirective } from './counter.directive';
     }),
   ],
   declarations: [
+    SiteManagementComponent,
     DashboardComponent,
     EcommerceComponent,
     TicketsWidgetComponent,

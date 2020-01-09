@@ -3,13 +3,13 @@
     <mat-card class="portal-map-card-contact mat-elevation-z8 portal-hide-scrollbars">
         <mat-list>
           <mat-list-item
-            *ngFor="let marker of markers"
-            (click)="onAlertClick(marker)"
-            [class.portal-maps-contact-item--active]="marker === activeMarker">
-            <img matListAvatar [src]="marker.photo" [alt]="marker.type">
-            <h3 matLine>{{ marker.type }} | {{ marker.confidence }}</h3>
+            *ngFor="let alert of alerts"
+            (click)="onMarkerClick(alert)"
+            [class.portal-maps-contact-item--active]="alert === activeMarker">
+            <img matListAvatar [src]="alert.photo" [alt]="alert.type">
+            <h3 matLine>{{ alert.type }} | {{ alert.confidence }}</h3>
             <p matLine>
-              {{ marker.site }}
+              {{ alert.site }}
             </p>
             <mat-icon mat-list-icon>room</mat-icon>
           </mat-list-item>
@@ -24,7 +24,7 @@
       <ng-template #noMarkerSelected>
           <div class='portal-maps-contact-detail-card__pin'></div>
           <div class='portal-maps-contact-detail-card__pulse'></div>
-          <p class="portal-maps-contact-detail-card__explainer">Click on one of the map markers or the avatars above in order to view that person's details.</p>
+          <p class="portal-maps-contact-detail-card__explainer">Click on one of the map markers or the alerts above in order to view that marker's details.</p>
       </ng-template>
       </div>
     </mat-card>
@@ -52,5 +52,6 @@
       </agm-info-window>
     </agm-marker>
   </agm-map>
+
 
 </div>

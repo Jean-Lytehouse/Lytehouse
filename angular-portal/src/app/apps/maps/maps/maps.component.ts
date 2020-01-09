@@ -14,8 +14,12 @@ export class MapsComponent implements OnInit {
   lat: number;
   lng: number;
   map: any;
-  activeMarker: Marker;
+  activeMarker: AnyMarker;
   markers: Marker[];
+  activeAlert: Alert;
+  alerts: Alert[];
+  sites: Site[];
+
   styles: any[] = [
     {
       'featureType': 'administrative.country',
@@ -33,8 +37,12 @@ export class MapsComponent implements OnInit {
   constructor(private http: HttpClient) {
     this.lat = -26.109630;
     this.lng = 27.795960;
-    this.http.get<Marker[]>('assets/data/apps/maps/alerts.json')
+    this.http.get<Marker[]>('assets/data/apps/maps/maps.json')
       .subscribe(markers => this.markers = markers);
+    this.http.get<Alert[]>('assets/data/apps/maps/alerts.json')
+      .subscribe(alerts => this.alerts = alerts);
+    this.http.get<Site[]>('assets/data/apps/maps/sites.json')
+      .subscribe(sites => this.sites = sites);
   }
 
   ngOnInit(): void {
@@ -44,7 +52,7 @@ export class MapsComponent implements OnInit {
     this.map = map;
   }
 
-  onAlertClick(marker: any): void {
+  onMarkerClick(marker: any): void {
     this.map.panTo(marker);
     this.activeMarker = marker;
     this.markers.forEach(m => m.isOpen = m === marker);
@@ -54,20 +62,26 @@ export class MapsComponent implements OnInit {
 interface Marker {
   lat: number;
   lng: number;
-  profession: string;
-  bio: string;
-  age: number;
-  name: string;
-  surname: string;
-  phone: string;
-  photo: string;
   isOpen: boolean;
-  type: string;
-  confidence: string;
-  site: string;
-  address: string;
-  sensor: string;
-  owner: string;
-  description: string;  
 }
 
+interface Site extends Marker {
+  owner: string;
+  photo: string;
+  description: string;
+  sensors: number;
+  name: string;
+  address: string;
+}
+
+interface Alert extends Marker, Site {
+  isConfirmed: boolean;
+  isResolved: boolean;
+  type: string;
+  sensor: string;
+  confidence: string;
+}
+
+interface AnyMarker extends Marker, Site, Alert {
+
+}

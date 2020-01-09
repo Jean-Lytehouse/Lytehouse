@@ -4,6 +4,8 @@ import { ModuleWithProviders } from '@angular/core';
 
 import { DashboardComponent } from './analytics/analytics.component';
 import { EcommerceComponent } from './ecommerce/ecommerce.component';
+import { SiteManagementComponent } from './site-management/sitemanagement.component';
+
 import { ProjectDashboardComponent } from './project-dashboard/project-dashboard.component';
 
 const routes: Routes = [{
@@ -13,10 +15,10 @@ const routes: Routes = [{
     title: 'Analytics Dashboard'
   }
 }, {
-  path: 'ecommerce',
-  component: EcommerceComponent,
+  path: 'site-management',
+  component: SiteManagementComponent,
   data: {
-    title: 'E-Commerce Dashboard'
+    title: 'Site Management'
   }
 }, {
   path: 'crypto',

@@ -1,0 +1,32 @@
+[
+    {
+        "site": "The Diner",
+        "address": "4 Neethling Street",
+        "sensors": 12,
+        "owner": "Jack Kirby",
+        "photo": "assets\/images\/avatars\/male\/41.jpg",
+        "lat": -26.742690,
+        "lng": 27.996965,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+        "site": "Anglo Gold Mine",
+        "address": "26 Bethelheim Street",
+        "sensors": 952,
+        "owner": "Salem Corona",
+        "photo": "assets\/images\/avatars\/male\/41.jpg",
+        "lat": -26.059690,
+        "lng": 27.185965,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+        "site": "Silverstar Casino",
+        "address": "29 Buitekant Street",
+        "sensors": 1026,
+        "owner": "Steve Balmer",
+        "photo": "assets\/images\/avatars\/male\/41.jpg",
+        "lat": -26.959690,
+        "lng": 27.155965,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    }
+]
