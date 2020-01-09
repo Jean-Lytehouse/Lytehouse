@@ -4,7 +4,7 @@ import { ModuleWithProviders } from '@angular/core';
 
 import { DashboardComponent } from './analytics/analytics.component';
 import { EcommerceComponent } from './ecommerce/ecommerce.component';
-import { SiteManagementComponent } from './site-management/sitemanagement.component';
+import { DetectionDemoComponent } from './detection-demo/detectiondemo.component';
 
 import { ProjectDashboardComponent } from './project-dashboard/project-dashboard.component';
 
@@ -15,10 +15,10 @@ const routes: Routes = [{
     title: 'Analytics Dashboard'
   }
 }, {
-  path: 'site-management',
-  component: SiteManagementComponent,
+  path: 'detection-demo',
+  component: DetectionDemoComponent,
   data: {
-    title: 'Site Management'
+    title: 'Detection Demo'
   }
 }, {
   path: 'crypto',

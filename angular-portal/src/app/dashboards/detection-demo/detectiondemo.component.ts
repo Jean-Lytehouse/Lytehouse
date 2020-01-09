@@ -3,11 +3,11 @@ import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions }
 
 import { UploadModule } from '../../upload/upload.module'
 @Component({
-  selector: 'app-sitemanagement',
-  templateUrl: './sitemanagement.component.html',
-  styleUrls: ['./sitemanagement.component.scss']
+  selector: 'app-detectiondemo',
+  templateUrl: './detectiondemo.component.html',
+  styleUrls: ['./detectiondemo.component.scss']
 })
-export class SiteManagementComponent {
+export class DetectionDemoComponent {
   options: UploaderOptions;
   formData: FormData;
   files: UploadFile[];
