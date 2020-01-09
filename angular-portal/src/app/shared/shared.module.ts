@@ -7,6 +7,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MomentModule } from 'ngx-moment';
 // Modules.
 import { SharedMaterialModule } from './shared-material.module';
+import { NgxUploaderModule } from 'ngx-uploader';
+import { UploadModule } from '../upload/upload.module'
 
 // Components.
 import { ExampleWithCodeComponent } from './example-with-code/example-with-code.component';
@@ -15,6 +17,8 @@ declare var hljs: any;
 
 @NgModule({
   imports: [
+    UploadModule,
+    NgxUploaderModule,
     CommonModule,
     HttpModule,
     HttpClientModule,
@@ -28,6 +32,8 @@ declare var hljs: any;
     ExampleWithCodeComponent
   ],
   exports: [
+    UploadModule,
+    NgxUploaderModule,
     CommonModule,
     HttpModule,
     HttpClientModule,

@@ -5,6 +5,8 @@ import { MatIconRegistry } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LayoutsModule } from './layouts/layouts.module';
+import { NgxUploaderModule } from 'ngx-uploader';
+import { UploadModule } from './upload/upload.module'
 
 import { AppComponent } from './app.component';
 
@@ -15,6 +17,8 @@ import 'hammerjs';
     AppComponent
   ],
   imports: [
+    UploadModule,
+    NgxUploaderModule,
     BrowserModule,
     BrowserAnimationsModule,
     LayoutsModule,
