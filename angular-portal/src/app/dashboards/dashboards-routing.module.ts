@@ -18,7 +18,7 @@ const routes: Routes = [{
   path: 'detection-demo',
   component: DetectionDemoComponent,
   data: {
-    title: 'Detection Demo'
+    title: 'Detecting Compliance Issues With Computer Vision'
   }
 }, {
   path: 'crypto',

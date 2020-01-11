@@ -28,6 +28,7 @@
     "@swimlane/ngx-charts": "^8.0.0",
     "angular2-moment": "^1.9.0",
     "ap-angular-fullcalendar": "^1.6.4",
+    "axios": "^0.19.1",
     "chart.js": "^2.7.1",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.4.1",
