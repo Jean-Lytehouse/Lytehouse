@@ -1,6 +1,6 @@
 const express = require('express')
 const upload = require('./upload')
-const upload = require('./download')
+const download = require('./download')
 
 const cors = require('cors')
 
