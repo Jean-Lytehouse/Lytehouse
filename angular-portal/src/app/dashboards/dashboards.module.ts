@@ -14,6 +14,8 @@ import { EcommerceComponent } from './ecommerce/ecommerce.component';
 import { CryptoDashboardComponent } from './crypto-dashboard/crypto-dashboard.component';
 import { ProjectDashboardComponent } from './project-dashboard/project-dashboard.component';
 import { DetectionDemoComponent } from './detection-demo/detectiondemo.component';
+import { DetectionResultsComponent } from './detection-results/detectionresults.component';
+
 
 // Components
 import { TicketsWidgetComponent } from './analytics/components/tickets-widget/tickets-widget.component';
@@ -59,6 +61,7 @@ import { CounterDirective } from './counter.directive';
     }),
   ],
   declarations: [
+    DetectionResultsComponent,
     DetectionDemoComponent,
     DashboardComponent,
     EcommerceComponent,

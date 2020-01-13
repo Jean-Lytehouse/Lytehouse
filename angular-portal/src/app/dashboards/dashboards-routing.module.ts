@@ -1,12 +1,11 @@
-import { CryptoDashboardComponent } from './crypto-dashboard/crypto-dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 
 import { DashboardComponent } from './analytics/analytics.component';
-import { EcommerceComponent } from './ecommerce/ecommerce.component';
 import { DetectionDemoComponent } from './detection-demo/detectiondemo.component';
+import { DetectionResultsComponent } from './detection-results/detectionresults.component';
 
-import { ProjectDashboardComponent } from './project-dashboard/project-dashboard.component';
+
 
 const routes: Routes = [{
   path: 'analytics',
@@ -21,16 +20,10 @@ const routes: Routes = [{
     title: 'Detecting Compliance Issues With Computer Vision'
   }
 }, {
-  path: 'crypto',
-  component: CryptoDashboardComponent,
+  path: 'detection-results',
+  component: DetectionResultsComponent,
   data: {
-    title: 'CryptoCurrency'
-  }
-}, {
-  path: 'project',
-  component: ProjectDashboardComponent,
-  data: {
-    title: 'Project'
+    title: 'Detection Results'
   }
 }];
 
