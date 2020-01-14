@@ -1,7 +1,7 @@
 <mat-grid-list cols="2" rowHeight="2:1">
   <mat-grid-tile 
     *ngFor="let detection of detections" 
-    style="background: url(" +detection.image_key+)">
-    {{detection.labels}}
+    style="background-image: url({{detection.image_key}})">
+    <img src="{{detection.image_key}}">
   </mat-grid-tile>
 </mat-grid-list>
