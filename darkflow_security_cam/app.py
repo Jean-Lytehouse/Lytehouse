@@ -80,11 +80,9 @@ def return_predictions_recur(filepath, destination, tfnet):
         for file in f:
             if '.jpg' in file:
                 files.append(os.path.join(r, file))
-    
     output_jsons = {}
     for f in files:
-        output_jsons[f.split('/')[-1]] = return_predictions(f,destination,tfnet)
-
+        output_jsons[f.split('\\')[-1]] = return_predictions(f,destination,tfnet)
     return jsonify(output_jsons)
 
 
@@ -113,8 +111,7 @@ def return_predictions(image_path, destination_path, tfnet):
 
     plt.axis('off')
     plt.imshow(boxing(original_img, final_list))
-    plt.savefig(destination_path + "/" + str(image_path.split('/')[-1]), bbox_inches='tight', transparent=True)
-
+    plt.savefig(destination_path + "\\" + str(image_path.split('\\')[-1].split(".")[0] + '.png'), bbox_inches='tight', transparent=True)
     ret_list = final_list
     labels_recognised = []
     confidence_scores = []
@@ -123,7 +120,7 @@ def return_predictions(image_path, destination_path, tfnet):
         labels_recognised.append(final_list[i]['label'])
         confidence_scores.append(final_list[i]['confidence'])
 
-    with open(destination_path + "/" + str(image_path.split('/')[-1]), 'rb') as image_file:
+    with open(destination_path + "\\" + str(image_path.split('\\')[-1].split(".")[0] + '.png'), 'rb') as image_file:
         encoded_string = base64.b64encode(image_file.read())
 
     output_json = { "labels":str(labels_recognised),
@@ -138,11 +135,15 @@ def get_image_prediction():
     Function to get the request header and pass it into the
     recursive function to process the images
     """
-    if request.headers['Content-Type'] == 'application/json':
+
+    if request.headers['Content-Type'] == 'application/json;charset=utf-8':
         response = request.get_json()
         filepath = response["filepath"]
         destination = response["destination"]
         return return_predictions_recur(str(filepath), str(destination), tfnet)
+    else:
+        print('header check failed')
+        return {403, 'Headers are invalid'}
 
 
 @app.route('/', methods=['GET'])
